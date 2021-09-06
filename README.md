@@ -1,2 +1,2 @@
-# readme-app
+# ReadMe
 iOS application for managing your books
