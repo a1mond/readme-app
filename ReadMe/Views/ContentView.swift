@@ -36,16 +36,13 @@ struct BookRow: View {
             destination: DetailView(book: book),
             label: {
                 HStack {
-                    Book.Image(title: book.title)
-                    VStack(alignment: .leading) {
-                        Text(book.title)
-                            .font(.title2)
-                        Text(book.author)
-                            .font(.title3)
-                            .foregroundColor(.secondary)
-                    }
-                    .lineLimit(1)
+                    Book.Image(title: book.title, size: 80)
+                        .padding(.trailing, 3)
+                    TitleAndAuthorStack(book: book, titleFont: .title3, authorFont: .title2)
+                        .lineLimit(1)
                 }
             })
     }
 }
+
+
