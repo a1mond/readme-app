@@ -9,24 +9,38 @@ import SwiftUI
 
 extension Book {
     struct Image: View {
+        let uiImage: UIImage?
         let title: String
         var size: CGFloat?
+        let cornerRadius: CGFloat
         
         var body: some View {
-            let symbol = SwiftUI.Image(title: title) ?? .init(systemName: "book")
-            symbol
-                .resizable()
-                .scaledToFit()
-                .frame(width: size, height: size)
-                .font(Font.title.weight(.light))
-                .foregroundColor(.secondary)
+            if let img = uiImage.map(SwiftUI.Image.init) {
+                img
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size, height: size)
+                    .cornerRadius(cornerRadius)
+            } else {
+                let symbol = SwiftUI.Image(title: title) ?? .init(systemName: "book")
+                symbol
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: size, height: size)
+                    .font(Font.title.weight(.light))
+                    .foregroundColor(.secondary)
+            }
         }
     }
 }
 struct Book_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            TitleAndAuthorStack(book: .init(), titleFont: .title, authorFont: .title2)
+            HStack {
+                BookmarkButton(book: .init())
+                BookmarkButton(book: .init(readMe: false))
+                TitleAndAuthorStack(book: .init(), titleFont: .title, authorFont: .title2)
+            }
             Book.Image(title: "")
                 .padding(.bottom)
             Book.Image(title: "N")
@@ -36,6 +50,23 @@ struct Book_Previews: PreviewProvider {
             Book.Image(title: "E")
             Book.Image(title: "")
                 .padding(.top)
+        }
+        .previewedInAllColorSchemes
+    }
+    
+}
+
+struct BookmarkButton: View {
+    var book: Book
+    
+    var body: some View {
+        let bookmark = "bookmark"
+        
+        Button {
+            
+        } label: {
+            Image(systemName: book.readMe ? "\(bookmark).fill" : bookmark)
+                .font(.system(size: 48, weight: .light))
         }
     }
 }
@@ -61,10 +92,26 @@ extension Image {
         guard
             let character = title.first,
             case let symbolNmae = "\(character.lowercased()).square",
-                UIImage(systemName: symbolNmae) != nil
+            UIImage(systemName: symbolNmae) != nil
         else {
             return nil
         }
         self.init(systemName: symbolNmae)
+    }
+}
+
+extension Book.Image {
+    init(title: String) {
+        self.init(
+            uiImage: nil,
+            title: title,
+            cornerRadius: .init()
+        )
+    }
+}
+
+extension View {
+    var previewedInAllColorSchemes: some View {
+        ForEach(ColorScheme.allCases, id: \.self, content: preferredColorScheme)
     }
 }

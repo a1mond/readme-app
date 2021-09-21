@@ -1,4 +1,6 @@
-final class Library {
+import class UIKit.UIImage
+
+struct Library {
   var sortedBooks: [Book] { booksCache }
 
   /// An in-memory cache of the manually-sorted books that are persistently stored.
@@ -15,4 +17,6 @@ final class Library {
     .init(title: "Drawing People", author: "Barbara Bradley"),
     .init(title: "What to Say When You Talk to Yourself", author: "Shad Helmstetter")
   ]
+    
+    var uiImages: [Book: UIImage] = [:]
 }

@@ -15,6 +15,7 @@
 		828E500926E64CF000151739 /* BookViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828E500826E64CF000151739 /* BookViews.swift */; };
 		828E500B26EA45CD00151739 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828E500A26EA45CD00151739 /* Library.swift */; };
 		828E500D26EA46F400151739 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828E500C26EA46F400151739 /* DetailView.swift */; };
+		828E500F26EFD40D00151739 /* PHPickerViewController.View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828E500E26EFD40D00151739 /* PHPickerViewController.View.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		828E500826E64CF000151739 /* BookViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookViews.swift; sourceTree = "<group>"; };
 		828E500A26EA45CD00151739 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		828E500C26EA46F400151739 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		828E500E26EFD40D00151739 /* PHPickerViewController.View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPickerViewController.View.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 				828E4FF826E64AD400151739 /* ContentView.swift */,
 				828E500826E64CF000151739 /* BookViews.swift */,
 				828E500C26EA46F400151739 /* DetailView.swift */,
+				828E500E26EFD40D00151739 /* PHPickerViewController.View.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -162,6 +165,7 @@
 				828E500D26EA46F400151739 /* DetailView.swift in Sources */,
 				828E4FF726E64AD400151739 /* ReadMeApp.swift in Sources */,
 				828E500B26EA45CD00151739 /* Library.swift in Sources */,
+				828E500F26EFD40D00151739 /* PHPickerViewController.View.swift in Sources */,
 				828E500626E64C7400151739 /* Book.swift in Sources */,
 				828E500926E64CF000151739 /* BookViews.swift in Sources */,
 			);

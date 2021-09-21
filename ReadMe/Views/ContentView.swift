@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var library = Library()
     var body: some View {
         NavigationView {
-            List(Library().sortedBooks, id: \.title) { book in
-                BookRow(book: book)
+            List(library.sortedBooks) { book in
+                BookRow(book: book, image: $library.uiImages[book])
             }
             .navigationBarTitle("My Library")
         }
@@ -22,6 +23,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             ContentView()
+                .previewedInAllColorSchemes
         }
     }
 }
@@ -30,13 +32,18 @@ struct ContentView_Previews: PreviewProvider {
 
 struct BookRow: View {
     let book: Book
+    @Binding var image: UIImage?
     
     var body: some View {
         NavigationLink(
-            destination: DetailView(book: book),
+            destination: DetailView(book: book, image: $image),
             label: {
                 HStack {
-                    Book.Image(title: book.title, size: 80)
+                    Book.Image(
+                        uiImage: image,
+                        title: book.title, size: 80,
+                        cornerRadius: 12
+                    )
                         .padding(.trailing, 3)
                     TitleAndAuthorStack(book: book, titleFont: .title3, authorFont: .title2)
                         .lineLimit(1)
