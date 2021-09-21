@@ -57,13 +57,13 @@ struct Book_Previews: PreviewProvider {
 }
 
 struct BookmarkButton: View {
-    var book: Book
+    @ObservedObject var book: Book
     
     var body: some View {
         let bookmark = "bookmark"
         
         Button {
-            
+            book.readMe.toggle()
         } label: {
             Image(systemName: book.readMe ? "\(bookmark).fill" : bookmark)
                 .font(.system(size: 48, weight: .light))

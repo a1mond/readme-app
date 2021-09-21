@@ -8,11 +8,33 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var library = Library()
+    @EnvironmentObject var library: Library
+    @State var isModalSheetPresented = false
     var body: some View {
         NavigationView {
-            List(library.sortedBooks) { book in
-                BookRow(book: book, image: $library.uiImages[book])
+            List {
+                Button {
+                    isModalSheetPresented = true
+                } label: {
+                    Spacer()
+                    VStack(spacing: 6.0) {
+                        Image(systemName: "book.circle")
+                            .font(.system(size: 60))
+                        Text("Add new book")
+                            .font(.title2)
+                    }
+                    Spacer()
+                }
+                .buttonStyle(BorderlessButtonStyle())
+                .padding(.vertical, 8)
+                .sheet(isPresented: $isModalSheetPresented, content: {
+                    NewBookView(book: .init(), image: nil)
+                })
+                
+                ForEach(library.sortedBooks) { book in
+                    BookRow(book: book)
+                        .padding(.vertical, 5)
+                }
             }
             .navigationBarTitle("My Library")
         }
@@ -24,6 +46,7 @@ struct ContentView_Previews: PreviewProvider {
         Group {
             ContentView()
                 .previewedInAllColorSchemes
+                .environmentObject(Library())
         }
     }
 }
@@ -31,22 +54,33 @@ struct ContentView_Previews: PreviewProvider {
 
 
 struct BookRow: View {
-    let book: Book
-    @Binding var image: UIImage?
+    @ObservedObject var book: Book
+    @EnvironmentObject var library: Library
     
     var body: some View {
         NavigationLink(
-            destination: DetailView(book: book, image: $image),
+            destination: DetailView(book: book),
             label: {
                 HStack {
                     Book.Image(
-                        uiImage: image,
+                        uiImage: library.uiImages[book],
                         title: book.title, size: 80,
                         cornerRadius: 12
                     )
-                        .padding(.trailing, 3)
-                    TitleAndAuthorStack(book: book, titleFont: .title3, authorFont: .title2)
-                        .lineLimit(1)
+                    .padding(.trailing, 3)
+                    VStack(alignment: .leading) {
+                        TitleAndAuthorStack(book: book, titleFont: .title3, authorFont: .title2)
+                            .lineLimit(1)
+                        if !book.microReview.isEmpty {
+                            Spacer()
+                            Text(book.microReview)
+                                .font(.subheadline)
+                                .foregroundColor(Color.gray)
+                        }
+                    }
+                    Spacer()
+                    BookmarkButton(book: book)
+                        .buttonStyle(BorderlessButtonStyle())
                 }
             })
     }

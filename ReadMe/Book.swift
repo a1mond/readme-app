@@ -4,12 +4,13 @@
 //
 //  Created by Владислав Котик on 06/09/2021.
 //
+import Combine
 
-class Book {
-    var title: String
-    var author: String
-    var microReview: String
-    var readMe: Bool
+class Book: ObservableObject {
+    @Published var title: String
+    @Published var author: String
+    @Published var microReview: String
+    @Published var readMe: Bool
     
     init(title: String = "Title", author: String = "Author", microReview: String = "", readMe: Bool = true) {
         self.title = title
