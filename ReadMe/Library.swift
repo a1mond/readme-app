@@ -8,6 +8,7 @@ enum Section: CaseIterable {
 
 final class Library: ObservableObject {
     var sortedBooks: [Book] { booksCache }
+    @Published var uiImages: [Book: UIImage] = [:]
     
     var manuallySortedBooks: [Section: [Book]] {
         Dictionary(grouping: booksCache, by: \.readMe)
@@ -17,7 +18,13 @@ final class Library: ObservableObject {
     func addNewBook(_ book: Book, image: UIImage?) {
         booksCache.insert(book, at: 0)
         uiImages[book] = image
+        storeCancellable(for: book)
     }
+    
+    init() {
+        booksCache.forEach(storeCancellable)
+    }
+    
     /// An in-memory cache of the manually-sorted books that are persistently stored.
     @Published private var booksCache: [Book] = [
         .init(title: "Ein Neues Land", author: "Shaun Tan", microReview: "Brilliant!"),
@@ -25,9 +32,18 @@ final class Library: ObservableObject {
         .init(title: "Dare to Lead", author: "Brené Brown"),
         .init(title: "Blasting for Optimum Health Recipe Book", author: "NutriBullet", microReview: "Awesome!")
     ]
+    private var cancellables: Set<AnyCancellable> = []
     
-    @Published var uiImages: [Book: UIImage] = [:]
 }
+private extension Library {
+    func storeCancellable(for book: Book) {
+        book.$readMe.sink { [unowned self] _ in
+            self.objectWillChange.send()
+        }
+        .store(in: &cancellables)
+    }
+}
+
 private extension Section {
     init(readMe: Bool) {
         self = readMe ? .readMe : .finished
