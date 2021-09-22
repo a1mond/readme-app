@@ -9,12 +9,12 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var library: Library
-    @State var isModalSheetPresented = false
+    @State var newBookSheet = false
     var body: some View {
         NavigationView {
             List {
                 Button {
-                    isModalSheetPresented = true
+                    newBookSheet = true
                 } label: {
                     Spacer()
                     VStack(spacing: 6.0) {
@@ -27,16 +27,47 @@ struct ContentView: View {
                 }
                 .buttonStyle(BorderlessButtonStyle())
                 .padding(.vertical, 8)
-                .sheet(isPresented: $isModalSheetPresented, content: {
-                    NewBookView(book: .init(), image: nil)
+                .sheet(isPresented: $newBookSheet, content: {
+                    NewBookView(book: .init(title: "", author: ""), image: nil)
                 })
                 
-                ForEach(library.sortedBooks) { book in
-                    BookRow(book: book)
-                        .padding(.vertical, 5)
+                ForEach(Section.allCases, id: \.self) {
+                    SectionView(section: $0)
                 }
             }
             .navigationBarTitle("My Library")
+        }
+    }
+}
+
+private struct SectionView: View {
+    let section: Section
+    @EnvironmentObject var library: Library
+    var title: String {
+        switch section {
+        case .readMe:
+            return "IN PROGRESS!"
+        case .finished:
+            return "FINISHED!"
+        }
+    }
+    
+    var body: some View {
+        if let books = library.manuallySortedBooks[section] {
+            SwiftUI.Section(
+                header: ZStack {
+                    Image("BookTexture")
+                        .resizable()
+                        .scaledToFit()
+                    Text(title)
+                        .font(.custom("American Typewriter", size: 24))
+                }
+                .listRowInsets(.init())
+            ) {
+                ForEach(books) {
+                    BookRow(book: $0)
+                }
+            }
         }
     }
 }
@@ -53,7 +84,7 @@ struct ContentView_Previews: PreviewProvider {
 
 
 
-struct BookRow: View {
+private struct BookRow: View {
     @ObservedObject var book: Book
     @EnvironmentObject var library: Library
     
