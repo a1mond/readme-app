@@ -70,7 +70,7 @@ private struct BookRows: DynamicViewContent {
         .onDelete { indexSet in
             library.deleteBooks(atOffsets: indexSet, section: section)
         }
-        .padding(.top, 5.0)
+        .padding(.vertical, 5)
     }
 }
 
@@ -130,12 +130,12 @@ private struct BookRow: View {
                 HStack {
                     Book.Image(
                         uiImage: library.uiImages[book],
-                        title: book.title, size: 80,
+                        title: book.title, size: 75,
                         cornerRadius: 12
                     )
                     .padding(.trailing, 3)
                     VStack(alignment: .leading) {
-                        TitleAndAuthorStack(book: book, titleFont: .title3, authorFont: .title2)
+                        TitleAndAuthorStack(book: book, titleFont: .title3, authorFont: .title3)
                             .lineLimit(1)
                         if !book.microReview.isEmpty {
                             Spacer()
